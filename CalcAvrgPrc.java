@@ -1,21 +1,25 @@
 import java.util.List;
 
 public class CalcAvrgPrc {
-    public static double calc(List<Double> prs, List<Long> tm) {
-        double sum = 0;
-        int ct = 0;
+   public static double calculateAveragePrice(List<Double> prices, List<Long> timesInSeconds) {
+        if (prices == null || timesInSeconds == null || prices.size() != timesInSeconds.size()) {
+            return -1; // Invalid input
+        }
 
-        for (int i = 0; i < prs.size(); i++) {
-            if (tm.get(i) > 18000) { // 5 hours in seconds
-                sum += prs.get(i);
-                ct += 1;
+        double totalPrice = 0;
+        int count = 0;
+
+        for (int i = 0; i < prices.size(); i++) {
+            if (timesInSeconds.get(i) > 5 * 3600) { // Convert hours to seconds
+                totalPrice += prices.get(i);
+                count++;
             }
         }
 
-        if (ct == 0) {
-            return -1; // No prices found
-        } else {
-            return sum / ct;
+        if (count == 0) {
+            return 0; // No items in the basket for more than 5 hours
         }
+
+        return totalPrice / count;
     }
 }
